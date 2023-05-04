@@ -22,13 +22,25 @@ function App() {
       case ".":
         setValue(prev => {
           if (Number.isInteger(prev)) {
-           return prev.toString().concat(e.target.innerText)
-          }else{
+            return prev.toString().concat(e.target.innerText)
+          } else {
             return prev;
           }
 
         });
         break;
+      case "=":
+        setValue(prev => +(prev));
+        break;
+        case "0":
+          setValue(prev => {
+            if(typeof prev =="string"){
+              return prev.concat("0")
+            }else{
+              return +(prev.toString().concat(e.target.innerText))
+            }
+          });
+          break;
       default:
         setValue(prev => +(prev.toString().concat(e.target.innerText)));
         break;
