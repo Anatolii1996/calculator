@@ -30,19 +30,34 @@ function App() {
         });
         break;
       case "=":
-        setValue(prev => +(prev));
+        setValue(prev =>{
+          if(prev.includes("+")){
+           return prev.split("+").reduce((accum, current) => (+accum) + (+current));
+          }else{
+            return +(prev)
+          }
+        } );
         break;
-        case "0":
-          setValue(prev => {
-            if(typeof prev =="string"){
-              return prev.concat("0")
-            }else{
-              return +(prev.toString().concat(e.target.innerText))
-            }
-          });
-          break;
+      case "0":
+        setValue(prev => {
+          if (typeof prev == "string") {
+            return prev.concat("0")
+          } else {
+            return +(prev.toString().concat("0"))
+          }
+        });
+        break;
+      case "+":
+        setValue(prev => prev.toString().concat("+"));
+        break;
       default:
-        setValue(prev => +(prev.toString().concat(e.target.innerText)));
+        setValue(prev => {
+          if (typeof prev == "string") {
+            return prev.concat(e.target.innerText)
+          } else {
+            return +(prev.toString().concat(e.target.innerText))
+          }
+        });
         break;
     }
   }
