@@ -1,38 +1,73 @@
 import './App.scss';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let buttons = document.querySelectorAll(".btn");
+
+    buttons.forEach((el) => {
+
+      el.addEventListener("click", handleClick);
+    })
+
+  }, [])
+  const handleClick = (e) => {
+    // console.log(e.target);
+    switch (e.target.innerText) {
+      case "AC":
+        setValue(0);
+        break;
+      case ".":
+        setValue(prev => {
+          if (Number.isInteger(prev)) {
+           return prev.toString().concat(e.target.innerText)
+          }else{
+            return prev;
+          }
+
+        });
+        break;
+      default:
+        setValue(prev => +(prev.toString().concat(e.target.innerText)));
+        break;
+    }
+  }
+
+
   return (
     <div className="App">
-     <div class="calc">
-      <div class="calc-screen">
-        <p>0</p>
+      <div className="calc">
+        <div className="calc-screen" id="display">
+          <p>{value}</p>
+        </div>
+        <div className="buttons">
+          <div className="btn ac bg-grey" id="clear" >AC</div>
+          <div className="btn plus-minus bg-grey" id="divide">+/-</div>
+          <div className="btn percent bg-grey">%</div>
+          <div className="btn division bg-orange">/</div>
+
+          <div className="btn seven" id="seven" >7</div>
+          <div className="btn eight" id="eight">8</div>
+          <div className="btn nine" id="nine">9</div>
+          <div className="btn multiplu bg-orange" id="multiply">x</div>
+
+          <div className="btn four" id="four">4</div>
+          <div className="btn five" id="five">5</div>
+          <div className="btn six" id="six">6</div>
+          <div className="btn minus bg-orange" id="subtract">-</div>
+
+          <div className="btn one" id="one">1</div>
+          <div className="btn two" id="two">2</div>
+          <div className="btn three" id="three">3</div>
+          <div className="btn plus bg-orange" id="add">+</div>
+
+          <div className="btn zero" id="zero">0</div>
+          <div className="btn dote" id="decimal">.</div>
+          <div className="btn equal bg-orange" id="equals">=</div>
+        </div>
       </div>
-      <div class="buttons">
-        <div class="btn ac bg-grey">AC</div>
-        <div class="btn plus-minus bg-grey" id="divide">+/-</div>
-        <div class="btn percent bg-grey">%</div>
-        <div class="btn division bg-orange">/</div>
-      
-        <div class="btn seven" id="seven">7</div>
-        <div class="btn eight" id="eight">8</div>
-        <div class="btn nine" id="nine">9</div>
-        <div class="btn multiplu bg-orange" id="multiply">x</div>
-      
-        <div class="btn four" id="four">4</div>
-        <div class="btn five" id="five">5</div>
-        <div class="btn six" id="six">6</div>
-        <div class="btn minus bg-orange" id="subtract">-</div>
-     
-        <div class="btn one" id="one">1</div>
-        <div class="btn two" id="two">2</div>
-        <div class="btn three" id="three">3</div>
-        <div class="btn plus bg-orange" id="add">+</div>
-      
-        <div class="btn zero" id="zero">0</div>
-        <div class="btn dote">,</div>
-        <div class="btn equal bg-orange" id="equals">=</div>
-      </div>
-    </div>
     </div>
   );
 }
