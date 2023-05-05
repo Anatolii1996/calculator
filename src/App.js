@@ -14,29 +14,36 @@ function App() {
 
   }, [])
   const handleClick = (e) => {
-    // console.log(e.target);
     switch (e.target.innerText) {
       case "AC":
         setValue(0);
         break;
       case ".":
         setValue(prev => {
-          if (Number.isInteger(prev)) {
-            return prev.toString().concat(e.target.innerText)
-          } else {
-            return prev;
+          if (typeof prev === "string") {
+            if(prev.includes("+")){
+              let plus = prev.split("+");
+               
+              let first= plus[0].concat("+")
+              let second=plus[1].concat(".")
+             
+              return first+second
+            }
+           else if (prev.includes(".") && e.target.innerText === ".") {
+              return prev; // не добавляем вторую точку
+            } else {
+              return prev.concat(e.target.innerText);
+            }
+          } else if (prev === 0) {
+            return prev.toString().concat(e.target.innerText);
           }
-
+           else {
+            return prev + "." ;
+          }
         });
         break;
       case "=":
-        setValue(prev =>{
-          if(prev.includes("+")){
-           return prev.split("+").reduce((accum, current) => (+accum) + (+current));
-          }else{
-            return +(prev)
-          }
-        } );
+        setValue(prev => eval(prev));
         break;
       case "0":
         setValue(prev => {
@@ -49,6 +56,15 @@ function App() {
         break;
       case "+":
         setValue(prev => prev.toString().concat("+"));
+        break;
+      case "-":
+        setValue(prev => prev.toString().concat("-"));
+        break;
+      case "x":
+        setValue(prev => prev.toString().concat("*"));
+        break;
+      case "/":
+        setValue(prev => prev.toString().concat("/"));
         break;
       default:
         setValue(prev => {
