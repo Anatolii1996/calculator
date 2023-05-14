@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 function App() {
   const [value, setValue] = useState(0);
 
+
   useEffect(() => {
     let buttons = document.querySelectorAll(".btn");
 
@@ -21,24 +22,32 @@ function App() {
       case ".":
         setValue(prev => {
           if (typeof prev === "string") {
-            if(prev.includes("+")){
-              let plus = prev.split("+");
-               
-              let first= plus[0].concat("+")
-              let second=plus[1].concat(".")
-             
-              return first+second
+            if (prev.includes("+")) {
+              const lastPlus = prev.lastIndexOf("+")
+              let plus = prev.split(prev[lastPlus]);
+              let first = []
+              for (let i = 0; i < plus.length; i++) {
+                if (i < plus.length - 1) {
+                  first.push(plus[i].concat("+"))
+                } else {
+                  first.push(plus[i])
+                }
+              }
+              let second = first.join("").concat(".");
+              return second
             }
-           else if (prev.includes(".") && e.target.innerText === ".") {
+            else if (prev.includes(".") && e.target.innerText === ".") {
               return prev; // не добавляем вторую точку
             } else {
               return prev.concat(e.target.innerText);
             }
           } else if (prev === 0) {
+            
             return prev.toString().concat(e.target.innerText);
           }
-           else {
-            return prev + "." ;
+          else {
+            
+            return prev + ".";
           }
         });
         break;
@@ -67,13 +76,16 @@ function App() {
         setValue(prev => prev.toString().concat("/"));
         break;
       default:
+
         setValue(prev => {
           if (typeof prev == "string") {
             return prev.concat(e.target.innerText)
           } else {
             return +(prev.toString().concat(e.target.innerText))
           }
+
         });
+
         break;
     }
   }
@@ -83,7 +95,8 @@ function App() {
     <div className="App">
       <div className="calc">
         <div className="calc-screen" id="display">
-          <p>{value}</p>
+
+          <p className={String(value).length > 7 ? "small_text" : ""}>{value}</p>
         </div>
         <div className="buttons">
           <div className="btn ac bg-grey" id="clear" >AC</div>
