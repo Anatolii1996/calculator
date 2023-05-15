@@ -12,22 +12,95 @@ function App() {
 
     buttons.forEach((el) => {
 
-      el.addEventListener("click", handleClick);
+      el.addEventListener("click", handleInput);
     })
 
   }, [])
+
+  const handleOutput = () => {
+    setOutput(calcData)
+  }
 
   useEffect(() => {
     handleOutput()
   }, [calcData])
 
+
+  const handleSubmit = () => {
+    console.log("handleSubmit")
+  }
+  const handleClear = () => {
+
+  }
+  const dotOperator = () => {
+
+  }
+  const handleNumbers = (value) => {
+    setCalcData((prevCalc) => {
+      if (!prevCalc) {
+        setInput(value);
+        return value;
+      }
+      else {
+        console.log(3333)
+        if (value == "0" && (prevCalc == "0" || input == "0")) {
+          console.log(4444)
+         return prevCalc;
+        } else {
+          
+          const lastChar = prevCalc.charAt(prevCalc.length - 1);
+          const lastOperator = lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
+          setInput( `${value}` );
+          return lastOperator ? `${value}` : `${prevCalc}${value}`;
+        }
+      }
+    })
+
+   
+  }
+
+
+  const handleOperators = () => {
+
+  }
+
   const handleInput = (e) => {
 
-  }
-  const handleOutput = () => {
-    setOutput(calcData)
-  }
+    switch (e.target.innerText) {
+      case "0":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+        handleNumbers(e.target.innerText);
+        break;
+      case "=":
+        handleSubmit();
+        break;
+      case "AC":
+        handleClear();
+        break;
+      case ".":
+        dotOperator();
+        break;
 
+      case "+" || "-" || "*" || "/":
+        handleOperators(e.target.innerText);
+        break
+      default:
+        break;
+    }
+
+
+
+
+
+  }
   return (
     <div className="App">
       <div className="calc">
@@ -64,5 +137,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
