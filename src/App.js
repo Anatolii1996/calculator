@@ -30,10 +30,28 @@ function App() {
     console.log("handleSubmit")
   }
   const handleClear = () => {
-
+    setInput("0");
+    setCalcData("");
   }
   const dotOperator = () => {
-
+    
+    setCalcData((prevCalc)=>{
+      const lastChar = prevCalc.charAt(prevCalc.length - 1);
+      if(!prevCalc){
+        setInput("0.");
+        return "0."
+      }else{
+        if(lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/"){
+          setInput("0.");
+          return `${prevCalc} 0.`
+        }else{
+          setInput(lastChar==="."||input.includes(".")?`${input}`:`${input}.`)
+          const format= lastChar==="."||prevCalc.includes(".")?`${prevCalc}`:`${prevCalc}.`
+          return format
+        }
+       
+      }
+    })
   }
   // const handleNumbers = (value) => {
   //   setCalcData((prevCalc) => {
