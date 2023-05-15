@@ -1,11 +1,11 @@
 import './App.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function App() {
   const [input, setInput] = useState("0");
   const [output, setOutput] = useState("");
   const [calcData, setCalcData] = useState("");
-
+  const calcDataRef = useRef(calcData);
 
   useEffect(() => {
     let buttons = document.querySelectorAll(".btn");
@@ -23,33 +23,46 @@ function App() {
 
   useEffect(() => {
     handleOutput()
+    calcDataRef.current = calcData;
   }, [calcData])
 
 
   const handleSubmit = () => {
-    console.log("handleSubmit")
+    // console.log("handleSubmit", calcDataRef.current)
+    const total = eval(calcDataRef.current)
+    const stringTotal = String(total);
+    if (stringTotal.startsWith("0.") && stringTotal.length > 7) {
+      console.log(589);
+      let newTotal = stringTotal.substring(0, 7)
+      setInput(`${newTotal}`)
+      setCalcData(`${newTotal}`)
+      return
+    }
+    setInput(`${total}`)
+    setCalcData(`${total}`)
   }
   const handleClear = () => {
     setInput("0");
     setCalcData("");
   }
   const dotOperator = () => {
-    
-    setCalcData((prevCalc)=>{
+
+    setCalcData((prevCalc) => {
       const lastChar = prevCalc.charAt(prevCalc.length - 1);
-      if(!prevCalc){
+      if (!prevCalc) {
         setInput("0.");
         return "0."
-      }else{
-        if(lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/"){
+      } else {
+        if (lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/") {
           setInput("0.");
           return `${prevCalc} 0.`
-        }else{
-          setInput(lastChar==="."||input.includes(".")?`${input}`:`${input}.`)
-          const format= lastChar==="."||prevCalc.includes(".")?`${prevCalc}`:`${prevCalc}.`
+        } else {
+          setInput(lastChar === "." || input.includes(".") ? `${input}` : `${input}.`)
+          //обрати внимание
+          const format = lastChar === "." || input.includes(".") ? `${prevCalc}` : `${prevCalc}.`
           return format
         }
-       
+
       }
     })
   }
@@ -77,7 +90,7 @@ function App() {
   //     }
   //   })
 
-   
+
   // }
 
   const handleNumbers = (value) => {
@@ -85,15 +98,15 @@ function App() {
       if (!prevCalc) {
         setInput(value);
         return value;
-      }else if(prevCalc==="0"&&value==="0"){
+      } else if (prevCalc === "0" && value === "0") {
         return prevCalc;
-      }else if(prevCalc==="0"&&value!=="0"){
+      } else if (prevCalc === "0" && value !== "0") {
         setInput(value)
         return value
       }
-      
+
       else {
-        const lastChar = prevCalc.charAt(prevCalc.length - 1);
+        const lastChar = prevCalc.charAt(prevCalc.length);
         const lastOperator =
           lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
         setInput((prevInput) => {
@@ -107,7 +120,45 @@ function App() {
       }
     });
   };
-  const handleOperators = () => {
+  const handleOperators = (value) => {
+    // console.log(value);
+    setCalcData((prevCalc) => {
+      if (prevCalc) {
+
+        setInput(value)
+        const BbeforeLast = prevCalc.charAt(prevCalc.length - 2);
+        // console.log("bblast", BbeforeLast)
+        const BbeforeIsOerator = BbeforeLast == "+" || BbeforeLast == "-" || BbeforeLast == "*" || BbeforeLast == "/";
+        // console.log(BbeforeIsOerator);
+        const beforeLast = prevCalc.charAt(prevCalc.length - 1);
+        // console.log("blast", beforeLast)
+        const beforeLastIsOperator = beforeLast == "+" || beforeLast == "-" || beforeLast == "*" || beforeLast == "/";
+        // console.log(beforeLastIsOperator)
+        const lastChar = value;
+        // console.log("last", lastChar)
+        const LastIsOperator = lastChar == "+" || lastChar == "-" || lastChar == "*" || lastChar == "/";
+        // console.log(LastIsOperator)
+        const validOp = value == "x" ? "*" : value;
+        // console.log(validOp)
+        if (BbeforeIsOerator) {
+          const updateValue = `${prevCalc.slice(0, -3).concat(prevCalc.slice(0, -2))}${validOp}`
+          // console.log(updateValue);
+          return updateValue
+        }
+        if ((LastIsOperator && value != "-") || (beforeLastIsOperator && LastIsOperator)) {
+          if (beforeLastIsOperator) {
+            const updateValue = `${prevCalc.substring(0, prevCalc.length-1)}${value}`
+            console.log(updateValue)
+            return updateValue;
+          } else {
+            return `${prevCalc.substring(0, prevCalc.length)}${validOp}`
+          }
+        } else {
+          console.log(111);
+          return `${prevCalc}${validOp}`
+        }
+      }
+    })
 
   }
 
@@ -127,6 +178,7 @@ function App() {
         handleNumbers(e.target.innerText);
         break;
       case "=":
+
         handleSubmit();
         break;
       case "AC":
@@ -136,18 +188,17 @@ function App() {
         dotOperator();
         break;
 
-      case "+" || "-" || "*" || "/":
+      case "+":
+      case "-":
+      case "x":
+      case "/":
         handleOperators(e.target.innerText);
         break
       default:
         break;
     }
-
-
-
-
-
   }
+
   return (
     <div className="App">
       <div className="calc">
