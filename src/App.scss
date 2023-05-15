@@ -10,7 +10,7 @@ body {
 .calc {
   margin: 50px auto;
   width: 300px;
-  height: 500px;
+  height: 530px;
   /* border: 1px solid #000; */
   border-radius: 20px;
   background: #000;
@@ -20,7 +20,7 @@ body {
   box-shadow: 4px 4px 4px #4f4f4f;
 }
 .calc-screen {
-  height: 115px;
+  height: 145px;
   padding: 10px;
   display: grid;
   justify-items: end;
@@ -29,13 +29,13 @@ body {
 .calc-screen {
   p {
     text-align: right;
-    font-size: 4rem;
+    font-size: 3.8rem;
     margin: 0;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
   }
-  .small_text {
-    font-size: 2rem;
-  }
+  // .small_text {
+  //   font-size: 2rem;
+  // }
 }
 
 .buttons {
