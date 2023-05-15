@@ -35,31 +35,60 @@ function App() {
   const dotOperator = () => {
 
   }
+  // const handleNumbers = (value) => {
+  //   setCalcData((prevCalc) => {
+  //     if (!prevCalc) {
+  //       setInput(value);
+  //       return value;
+  //     }
+  //     else {
+  //       console.log(3333)
+  //       if (value == "0" && (prevCalc == "0" || input == "0")) {
+  //         console.log(4444)
+  //         console.log(prevCalc)
+  //         console.log(value)
+  //         console.log(input)
+  //        return prevCalc;
+  //       } else {
+  //         console.log(555);
+  //         const lastChar = prevCalc.charAt(prevCalc.length - 1);
+  //         const lastOperator = lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
+  //         setInput( `${value}` );
+  //         return lastOperator ? `${value}` : `${prevCalc}${value}`;
+  //       }
+  //     }
+  //   })
+
+   
+  // }
+
   const handleNumbers = (value) => {
     setCalcData((prevCalc) => {
       if (!prevCalc) {
         setInput(value);
         return value;
+      }else if(prevCalc==="0"&&value==="0"){
+        return prevCalc;
+      }else if(prevCalc==="0"&&value!=="0"){
+        setInput(value)
+        return value
       }
+      
       else {
-        console.log(3333)
-        if (value == "0" && (prevCalc == "0" || input == "0")) {
-          console.log(4444)
-         return prevCalc;
-        } else {
-          
-          const lastChar = prevCalc.charAt(prevCalc.length - 1);
-          const lastOperator = lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
-          setInput( `${value}` );
-          return lastOperator ? `${value}` : `${prevCalc}${value}`;
-        }
+        const lastChar = prevCalc.charAt(prevCalc.length - 1);
+        const lastOperator =
+          lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
+        setInput((prevInput) => {
+          if (prevInput === "0") {
+            return value;
+          } else {
+            return prevInput + value;
+          }
+        });
+        return lastOperator ? value : prevCalc + value;
       }
-    })
-
-   
-  }
-
-
+    });
+  };
   const handleOperators = () => {
 
   }
