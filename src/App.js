@@ -208,8 +208,8 @@ function App() {
         </div>
         <div className="buttons">
           <div className="btn ac bg-grey" id="clear" >AC</div>
-          <div className="btn plus-minus bg-grey" id="divide">+/-</div>
-          <div className="btn percent bg-grey">%</div>
+          {/* <div className="btn plus-minus bg-grey" id="divide">+/-</div> */}
+          <div className="btn plus bg-orange" id="add">+</div>
           <div className="btn division bg-orange">/</div>
 
           <div className="btn seven" id="seven" >7</div>
@@ -225,7 +225,7 @@ function App() {
           <div className="btn one" id="one">1</div>
           <div className="btn two" id="two">2</div>
           <div className="btn three" id="three">3</div>
-          <div className="btn plus bg-orange" id="add">+</div>
+          
 
           <div className="btn zero" id="zero">0</div>
           <div className="btn dote" id="decimal">.</div>

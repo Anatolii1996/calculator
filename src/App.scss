@@ -41,10 +41,10 @@ body {
 .buttons {
   display: grid;
   grid-template-areas:
-    "ac plus-minus percent division"
+    "ac ac plus division"
     "seven eight nine multiplu"
     "four five six minus"
-    "one two three plus"
+    "one two three equal"
     "zero zero dote equal";
   grid-template-rows: repeat(5, auto);
   grid-template-columns: repeat(4, auto);
@@ -64,6 +64,18 @@ body {
 }
 .btn.zero {
   grid-area: zero;
+  width: 100%;
+  border-radius: 34px;
+}
+.btn.equal {
+  grid-area: equal;
+  line-height: 130px;
+
+  height: 100%;
+  border-radius: 34px;
+}
+.btn.ac {
+  grid-area: ac;
   width: 100%;
   border-radius: 34px;
 }
