@@ -6,6 +6,7 @@ function App() {
   const [output, setOutput] = useState("");
   const [calcData, setCalcData] = useState("");
   const calcDataRef = useRef(calcData);
+  const inputDataRef = useRef(input);
 
   useEffect(() => {
     let buttons = document.querySelectorAll(".btn");
@@ -24,146 +25,55 @@ function App() {
   useEffect(() => {
     handleOutput()
     calcDataRef.current = calcData;
+    inputDataRef.current = input;
   }, [calcData])
 
 
   const handleSubmit = () => {
-    // console.log("handleSubmit", calcDataRef.current)
-    const total = eval(calcDataRef.current)
-    const stringTotal = String(total);
-    if (stringTotal.startsWith("0.") && stringTotal.length > 7) {
-      console.log(589);
-      let newTotal = stringTotal.substring(0, 7)
-      setInput(`${newTotal}`)
-      setCalcData(`${newTotal}`)
-      return
-    }
-    setInput(`${total}`)
-    setCalcData(`${total}`)
+   
   }
+
   const handleClear = () => {
     setInput("0");
     setCalcData("");
   }
+
   const dotOperator = () => {
 
-    setCalcData((prevCalc) => {
-      const lastChar = prevCalc.charAt(prevCalc.length - 1);
-      if (!prevCalc) {
-        setInput("0.");
-        return "0."
-      } else {
-        if (lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/") {
-          setInput("0.");
-          return `${prevCalc} 0.`
-        } else {
-          setInput(lastChar === "." || input.includes(".") ? `${input}` : `${input}.`)
-          //обрати внимание
-          const format = lastChar === "." || input.includes(".") ? `${prevCalc}` : `${prevCalc}.`
-          return format
-        }
-
-      }
-    })
-  }
-  // const handleNumbers = (value) => {
-  //   setCalcData((prevCalc) => {
-  //     if (!prevCalc) {
-  //       setInput(value);
-  //       return value;
-  //     }
-  //     else {
-  //       console.log(3333)
-  //       if (value == "0" && (prevCalc == "0" || input == "0")) {
-  //         console.log(4444)
-  //         console.log(prevCalc)
-  //         console.log(value)
-  //         console.log(input)
-  //        return prevCalc;
-  //       } else {
-  //         console.log(555);
-  //         const lastChar = prevCalc.charAt(prevCalc.length - 1);
-  //         const lastOperator = lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
-  //         setInput( `${value}` );
-  //         return lastOperator ? `${value}` : `${prevCalc}${value}`;
-  //       }
-  //     }
-  //   })
-
-
-  // }
+   
+  }  
 
   const handleNumbers = (value) => {
-    setCalcData((prevCalc) => {
-      if (!prevCalc) {
-        setInput(value);
-        return value;
-      } else if (prevCalc === "0" && value === "0") {
-        return prevCalc;
-      } else if (prevCalc === "0" && value !== "0") {
-        setInput(value)
-        return value
-      }
+    console.log(input)
+    if (!calcDataRef.current) {
+      
+      setInput(`${value}`);
+      setCalcData(`${value}`);
+    } else {
+      
+      if (value === "0" && (calcDataRef.current === "0" || inputDataRef.current === "0")) {
+       
+        setCalcData(`${calcDataRef.current}`);
+       
+      } else {
+        console.log(4444)
+        const lastChat = calcDataRef.current.charAt(calcDataRef.current.length - 1);
+        const isLastChatOperator =
+          lastChat === "*" || lastChat === "+"||lastChat === "-"||lastChat === "/";
 
-      else {
-        const lastChar = prevCalc.charAt(prevCalc.length);
-        const lastOperator =
-          lastChar === "*" || lastChar === "+" || lastChar === "-" || lastChar === "/";
-        setInput((prevInput) => {
-          if (prevInput === "0") {
-            return value;
-          } else {
-            return prevInput + value;
-          }
-        });
-        return lastOperator ? value : prevCalc + value;
+        setInput(isLastChatOperator ? `${value}` : `${inputDataRef.current}${value}`);
+        setCalcData(`${calcDataRef.current}${value}`);
       }
-    });
+    }
   };
-  const handleOperators = (value) => {
-    // console.log(value);
-    setCalcData((prevCalc) => {
-      if (prevCalc) {
 
-        setInput(value)
-        const BbeforeLast = prevCalc.charAt(prevCalc.length - 2);
-        // console.log("bblast", BbeforeLast)
-        const BbeforeIsOerator = BbeforeLast == "+" || BbeforeLast == "-" || BbeforeLast == "*" || BbeforeLast == "/";
-        // console.log(BbeforeIsOerator);
-        const beforeLast = prevCalc.charAt(prevCalc.length - 1);
-        // console.log("blast", beforeLast)
-        const beforeLastIsOperator = beforeLast == "+" || beforeLast == "-" || beforeLast == "*" || beforeLast == "/";
-        // console.log(beforeLastIsOperator)
-        const lastChar = value;
-        // console.log("last", lastChar)
-        const LastIsOperator = lastChar == "+" || lastChar == "-" || lastChar == "*" || lastChar == "/";
-        // console.log(LastIsOperator)
-        const validOp = value == "x" ? "*" : value;
-        // console.log(validOp)
-        if (BbeforeIsOerator) {
-          const updateValue = `${prevCalc.slice(0, -3).concat(prevCalc.slice(0, -2))}${validOp}`
-          // console.log(updateValue);
-          return updateValue
-        }
-        if ((LastIsOperator && value != "-") || (beforeLastIsOperator && LastIsOperator)) {
-          if (beforeLastIsOperator) {
-            const updateValue = `${prevCalc.substring(0, prevCalc.length-1)}${value}`
-            console.log(updateValue)
-            return updateValue;
-          } else {
-            return `${prevCalc.substring(0, prevCalc.length)}${validOp}`
-          }
-        } else {
-          console.log(111);
-          return `${prevCalc}${validOp}`
-        }
-      }
-    })
+  const handleOperators = (value) => {
+   
 
   }
 
   const handleInput = (e) => {
-
+// console.log(e.target.innerText)
     switch (e.target.innerText) {
       case "0":
       case "1":
@@ -208,7 +118,6 @@ function App() {
         </div>
         <div className="buttons">
           <div className="btn ac bg-grey" id="clear" >AC</div>
-          {/* <div className="btn plus-minus bg-grey" id="divide">+/-</div> */}
           <div className="btn plus bg-orange" id="add">+</div>
           <div className="btn division bg-orange">/</div>
 
