@@ -30,7 +30,10 @@ function App() {
 
 
   const handleSubmit = () => {
-   
+    const total = eval(calcDataRef.current);
+    setInput(total);
+    setOutput(`${total} = ${total}`);
+    setCalcData(`${total}`);
   }
 
   const handleClear = () => {
@@ -39,12 +42,29 @@ function App() {
   }
 
   const dotOperator = () => {
-
+    const lastChat = calcDataRef.current.charAt(calcDataRef.current.length - 1);
+    if (!calcDataRef.current.length) {
+      setInput("0.");
+      setCalcData("0.");
+    } else {
+      if (lastChat === "*" ||lastChat === "+" ||lastChat === "-"||lastChat === "/") {
+        setInput("0.");
+        setCalcData(`${calcDataRef.current} 0.`);
+      } else {
+        setInput(
+          lastChat === "." || inputDataRef.current.includes(".") ? `${inputDataRef.current}` : `${inputDataRef.current}.`
+        );
+        const formattedValue =
+          lastChat === "." || inputDataRef.current.includes(".")
+            ? `${calcDataRef.current}`
+            : `${calcDataRef.current}.`;
+        setCalcData(formattedValue);
+      }
+    }
    
   }  
 
   const handleNumbers = (value) => {
-    console.log(input)
     if (!calcDataRef.current) {
       
       setInput(`${value}`);
@@ -56,7 +76,7 @@ function App() {
         setCalcData(`${calcDataRef.current}`);
        
       } else {
-        console.log(4444)
+       
         const lastChat = calcDataRef.current.charAt(calcDataRef.current.length - 1);
         const isLastChatOperator =
           lastChat === "*" || lastChat === "+"||lastChat === "-"||lastChat === "/";
@@ -68,12 +88,39 @@ function App() {
   };
 
   const handleOperators = (value) => {
-   
+   if (calcDataRef.current.length) {
+      setInput(`${value}`);
+      const beforeLastChat = calcDataRef.current.charAt(calcDataRef.current.length - 2);
+
+      const beforeLastChatIsOperator =
+      beforeLastChat === "+"||beforeLastChat === "-"||beforeLastChat === "/"|| beforeLastChat === "*";
+
+      const lastChat = calcDataRef.current.charAt(calcDataRef.current.length - 1);
+      
+      const lastChatIsOperator = lastChat === "+" ||lastChat === "-" || lastChat === "*"||lastChat === "/";
+      
+      const validOp = value === "x" ? "*" : value;
+      if (
+        (lastChatIsOperator && value !== "-") ||
+        beforeLastChatIsOperator && lastChatIsOperator
+      ) {
+        if (beforeLastChatIsOperator) {
+          const updatedValue = `${calcDataRef.current.substring(
+            0,
+            calcDataRef.current.length - 2
+          )}${value}`;
+          setCalcData(updatedValue);
+        } else {
+          setCalcData(`${calcDataRef.current.substring(0, calcDataRef.current.length - 1)}${validOp}`);
+        }
+      } else {
+        setCalcData(`${calcDataRef.current}${validOp}`);
+      }
+    }
 
   }
 
   const handleInput = (e) => {
-// console.log(e.target.innerText)
     switch (e.target.innerText) {
       case "0":
       case "1":
@@ -119,7 +166,7 @@ function App() {
         <div className="buttons">
           <div className="btn ac bg-grey" id="clear" >AC</div>
           <div className="btn plus bg-orange" id="add">+</div>
-          <div className="btn division bg-orange">/</div>
+          <div className="btn division bg-orange" id="divide">/</div>
 
           <div className="btn seven" id="seven" >7</div>
           <div className="btn eight" id="eight">8</div>
