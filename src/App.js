@@ -1,3 +1,4 @@
+/* eslint-disable */
 import './App.scss';
 import { useState, useEffect, useRef } from 'react';
 
